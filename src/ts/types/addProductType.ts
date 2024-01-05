@@ -1,5 +1,6 @@
 export type addProductType = {
-    category_id: number, 
+    product_id: string,
+    category_id: string, 
     name: string,
     price: number,
     stock: number,

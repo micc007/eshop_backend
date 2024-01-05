@@ -2,11 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import { addProduct } from '../config/mysql';
 import { addProductType } from "../ts/types/addProductType";
 
+import { nanoid } from 'nanoid'
+
 const addProductController = (req: Request, res: Response, next: NextFunction) => {
     
     const b = req.body;
 
     const placeholder: addProductType = {
+        product_id: nanoid(),
         category_id: b.category_id,
         name: b.name,
         price: b.price,

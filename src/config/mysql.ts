@@ -30,19 +30,22 @@ async function modifyQuery(query: string, props?: any): Promise<ResultSetHeader>
 // query functions for specific endpoints
 
 const getItems = () => {
-    // upraviť category id na nanoid
-    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM product p, category c WHERE c.category_id=1";
+    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM product p, category c WHERE c.category_id = p.category_id";
     return selectQuery(query);
 }
 
+const getOneItem = (props: string[]) => {
+    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM product p, category c WHERE p.product_id = ? AND c.category_id = p.category_id";
+    return selectQuery(query, props);
+}
+
 const getCategories = () => {
-    // upraviť category id na nanoid
     const query: string = "SELECT category_id, category FROM category";
     return selectQuery(query);
 }
 
 const addProduct = (props: addProductType) => {
-    const query: string = "INSERT INTO product(category_id, name, price, stock, specs) VALUES (?,?,?,?,?)";
+    const query: string = "INSERT INTO product(product_id, category_id, name, price, stock, specs) VALUES (?,?,?,?,?,?)";
     return modifyQuery(query, props);
 }
 
@@ -51,9 +54,11 @@ const addCategory = (props: addCategoryType) => {
     return modifyQuery(query, props);
 }
 
+
 export { 
     getItems,
     getCategories,
     addProduct,
     addCategory,
+    getOneItem,
 };
