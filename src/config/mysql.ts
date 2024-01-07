@@ -30,27 +30,27 @@ async function modifyQuery(query: string, props?: any): Promise<ResultSetHeader>
 // query functions for specific endpoints
 
 const getItems = () => {
-    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM product p, category c WHERE c.category_id = p.category_id";
+    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM products p, categories c WHERE c.category_id = p.category_id";
     return selectQuery(query);
 }
 
 const getOneItem = (props: string[]) => {
-    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM product p, category c WHERE p.product_id = ? AND c.category_id = p.category_id";
+    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM products p, categories c WHERE p.product_id = ? AND c.category_id = p.category_id";
     return selectQuery(query, props);
 }
 
 const getCategories = () => {
-    const query: string = "SELECT category_id, category FROM category";
+    const query: string = "SELECT category_id, category FROM categories";
     return selectQuery(query);
 }
 
 const addProduct = (props: addProductType) => {
-    const query: string = "INSERT INTO product(product_id, category_id, name, price, stock, specs) VALUES (?,?,?,?,?,?)";
+    const query: string = "INSERT INTO products(product_id, category_id, name, price, stock, specs) VALUES (?,?,?,?,?,?)";
     return modifyQuery(query, props);
 }
 
 const addCategory = (props: addCategoryType) => {
-    const query: string = "INSERT INTO category(category_id, category) VALUES (?,?)";
+    const query: string = "INSERT INTO categories(category_id, category) VALUES (?,?)";
     return modifyQuery(query, props);
 }
 
