@@ -4,6 +4,7 @@ import getCategoriesController from './controllers/getCategoriesController';
 import addProductController from './controllers/addProductController';
 import addCategoryController from './controllers/addCategoryController';
 import getOneItemController from './controllers/getOneItemController';
+import createOrderController from './controllers/createOrderController';
 
 const route = Router(); 
 
@@ -29,7 +30,7 @@ route.get('/get_categories', getCategoriesController);
 
 route.get('/item/:id', getOneItemController);
 
-route.post('/order');
+route.post('/order', createOrderController);
 
 
 

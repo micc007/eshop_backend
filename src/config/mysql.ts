@@ -1,9 +1,13 @@
 import mysql, { ResultSetHeader } from 'mysql2/promise';
-import { addProductType } from '../ts/types/addProductType';
-import { addCategoryType } from '../ts/types/addCategoryType';
-
 import dotenv from 'dotenv';
 dotenv.config();
+
+// TYPES
+import { addProductType } from '../ts/types/addProductType';
+import { addCategoryType } from '../ts/types/addCategoryType';
+import { orderType } from '../ts/types/orderType';
+import { paymentType } from '../ts/types/paymentType';
+
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST as string,
@@ -55,10 +59,22 @@ const addCategory = (props: addCategoryType) => {
 }
 
 
+const createOrder = (props: orderType) => {
+    const query: string = "INSERT INTO orders(order_id, cust_reg, reg_cust_id, non_reg_cust, items, status, delivery, timestamp, payment_id) VALUES (?,?,?,?,?,?,?,?,?)";
+    return modifyQuery(query, props);
+}
+
+const createPayment = (props: paymentType) => {
+    const query: string = "INSERT INTO payments(payment_id, method, status) VALUES (?,?,?)";
+    return modifyQuery(query, props);
+}
+
 export { 
     getItems,
     getCategories,
     addProduct,
     addCategory,
     getOneItem,
+    createOrder,
+    createPayment
 };
