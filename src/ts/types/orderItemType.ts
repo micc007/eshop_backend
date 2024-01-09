@@ -1,6 +1,6 @@
 export type orderItemType = {
     product_id: string,
-    amount: number
+    quantity: number
 }
 
 // {

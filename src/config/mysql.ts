@@ -7,6 +7,8 @@ import { addProductType } from '../ts/types/addProductType';
 import { addCategoryType } from '../ts/types/addCategoryType';
 import { orderType } from '../ts/types/orderType';
 import { paymentType } from '../ts/types/paymentType';
+import { orderItemType } from '../ts/types/orderItemType';
+import { itemDataType } from '../ts/types/itemDataType';
 
 
 const pool = mysql.createPool({
@@ -58,15 +60,31 @@ const addCategory = (props: addCategoryType) => {
     return modifyQuery(query, props);
 }
 
-
 const createOrder = (props: orderType) => {
     const query: string = "INSERT INTO orders(order_id, cust_reg, reg_cust_id, non_reg_cust, items, status, delivery, timestamp, payment_id) VALUES (?,?,?,?,?,?,?,?,?)";
     return modifyQuery(query, props);
 }
 
 const createPayment = (props: paymentType) => {
-    const query: string = "INSERT INTO payments(payment_id, method, status) VALUES (?,?,?)";
+    const query: string = "INSERT INTO payments(payment_id, value, method, status) VALUES (?,?,?,?)";
     return modifyQuery(query, props);
+}
+
+const getItemPrices = (props: string[]) => {
+    let ids: string = "";
+
+    for(let i: number = 0; i < props.length; i++) {
+        ids += `'${props[i]}'`
+        if(i === props.length-1) continue;
+        ids += ",";
+    }
+
+    console.log(ids);
+
+    const query: string = `SELECT product_id, price, stock FROM products WHERE product_id IN (${ids})`;
+    console.log(query);
+
+    return selectQuery(query, props);
 }
 
 export { 
@@ -76,5 +94,6 @@ export {
     addCategory,
     getOneItem,
     createOrder,
-    createPayment
+    createPayment,
+    getItemPrices
 };
