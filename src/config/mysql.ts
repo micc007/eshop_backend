@@ -87,6 +87,11 @@ const getItemPrices = (props: string[]) => {
     return selectQuery(query, props);
 }
 
+const updateStock = (props: [number, string]) => {
+    const query: string = "UPDATE products SET stock = ? WHERE product_id=?";
+    return modifyQuery(query, props);
+}
+
 export { 
     getItems,
     getCategories,
@@ -95,5 +100,6 @@ export {
     getOneItem,
     createOrder,
     createPayment,
-    getItemPrices
+    getItemPrices,
+    updateStock
 };

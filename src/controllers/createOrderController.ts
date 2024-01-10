@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { createOrder, createPayment, getItemPrices } from '../config/mysql';
+import { createOrder, createPayment, getItemPrices, updateStock } from '../config/mysql';
 import { orderType } from "../ts/types/orderType";
 import { orderItemType } from "../ts/types/orderItemType";
 import { paymentType } from "../ts/types/paymentType";
@@ -10,61 +10,98 @@ import { nanoid } from 'nanoid'
 const createOrderController = async (req: Request, res: Response, next: NextFunction) => {
     
     const b = req.body;
-
     const paymentId = nanoid();
-
-    
     let orderItemsArray: orderItemType[] = req.body.items;
+    let itemIdArray: string[] = orderItemsArray.map(a => a.product_id); // select product IDs for fetch function
 
-    // fetch prices of cart items from database
-    let itemIdArray: string[] = orderItemsArray.map(a => a.product_id);
-    const itemData: any[] = await getItemPrices(itemIdArray);
+    const itemData: any[] = await getItemPrices(itemIdArray); // fetch prices of cart items from database
     orderItemsArray.sort((a, b) => (a.product_id > b.product_id) ? 1 : ((b.product_id > a.product_id) ? -1 : 0))
     itemData.sort((a, b) => (a.product_id > b.product_id) ? 1 : ((b.product_id > a.product_id) ? -1 : 0))
     console.log(itemData);
     console.log(orderItemsArray)
-
-    const orderData: orderType = {
-        order_id: nanoid(),
-        cust_reg: req.body.cust_reg,
-        reg_cust_id: req.body.reg_cust_id, // change when user registration is implemented
-        non_reg_cust: JSON.stringify(req.body.non_reg_cust), // change when user registration is implemented
-        items: JSON.stringify({"items":orderItemsArray}),
-        status: "created",
-        delivery: req.body.delivery,
-        timestamp: new Date(),
-        payment_id: paymentId
-    }
-
-    let fullPrice: number = 0;
-    for(let i: number = 0; i < itemData.length; i++) {
-        fullPrice += (itemData[i].price * orderItemsArray[i].quantity);
-    }
-
-    console.log(fullPrice);
-
-    const paymentData: paymentType = {
-        payment_id: paymentId,
-        value: fullPrice,
-        method: req.body.payment_method,
-        status: false,
-    }
-
-    console.log(paymentData);
-
-    try {
-        createPayment(paymentData);
-        createOrder(orderData);
-    }
-    catch {
-        console.log("500 - server failure");
-        res.status(500).json({"message":"server failure"});
-    }
     
-    res.status(200).json({"message":"success"});
+    let availabilityMap = new Map<string, boolean>(); // check if all cart items are in stock in desired quantity, false if stock is not sufficient
 
+    for(let i: number = 0; i < itemData.length; i++) {
+        if(orderItemsArray[i].quantity > itemData[i].stock) availabilityMap.set(itemData[i].product_id, false);
+        else availabilityMap.set(itemData[i].product_id, true);
+    }
 
-//     // {
+    
+    if(isInStock(availabilityMap)){
+        // if all items are available in desired quantity, create order
+        const orderData: orderType = {
+            order_id: nanoid(),
+            cust_reg: req.body.cust_reg,
+            reg_cust_id: req.body.reg_cust_id, // change when user registration is implemented
+            non_reg_cust: JSON.stringify(req.body.non_reg_cust), // change when user registration is implemented
+            items: JSON.stringify({"items":orderItemsArray}),
+            status: "created",
+            delivery: req.body.delivery,
+            timestamp: new Date(),
+            payment_id: paymentId
+        }
+        
+        let fullPrice: number = 0;
+        
+        for(let i: number = 0; i < itemData.length; i++) {
+            fullPrice += (itemData[i].price * orderItemsArray[i].quantity);
+        }
+        
+        console.log(fullPrice);
+        
+        const paymentData: paymentType = {
+            payment_id: paymentId,
+            value: fullPrice,
+            method: req.body.payment_method,
+            status: false,
+        }
+        
+        console.log(paymentData);
+        
+        try {
+            await createPayment(paymentData);
+            await createOrder(orderData);
+            await changeStock(itemData, orderItemsArray);
+        }
+        catch {
+            console.log("500 - server failure");
+            res.status(500).json({"message":"server failure"});
+        }
+        
+        res.status(200).json({"message":"success"});
+    }
+    else {
+        // if any item is not available in desired quantity, just return message and hash map
+        res.status(200).json({
+            "message":"some items are not available in desired quantity",
+            availabilityMap
+        })
+    }
+                          
+}
+    
+    const isInStock = (map: Map<string, boolean>): boolean => {
+        
+        for(let value of map.values()) {
+            if(!value) return false;
+        }
+        return true;
+    }
+
+    const changeStock = (fetch: any[], cart: orderItemType[]) => {
+        for(let i: number = 0; i < fetch.length; i++) {
+            let placeholder: [number, string] = [
+                fetch[i].stock - cart[i].quantity,
+                fetch[i].product_id
+            ];
+            updateStock(placeholder);
+        }
+    }
+
+export default createOrderController;
+
+// {
 //     "cust_reg": false,
 //     "reg_cust_id": null,
 //     "non_reg_cust": {"meno":"Michal", "priezvisko": "Mitro"},
@@ -89,9 +126,3 @@ const createOrderController = async (req: Request, res: Response, next: NextFunc
 //     "delivery": "courier",
 //     "payment_method": "cash"
 // }
-    
-    
-        
-}
-
-export default createOrderController;
