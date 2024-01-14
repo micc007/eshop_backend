@@ -3,6 +3,10 @@ import getItemsController from './controllers/getItemsController';
 import getCategoriesController from './controllers/getCategoriesController';
 import addProductController from './controllers/addProductController';
 import addCategoryController from './controllers/addCategoryController';
+import getEditProductController from './controllers/getEditProductController';
+import getEditCategoryController from './controllers/getEditCategoryController';
+import postEditProductController from './controllers/postEditProductController';
+import postEditCategoryController from './controllers/postEditCategoryController';
 import getOneItemController from './controllers/getOneItemController';
 import createOrderController from './controllers/createOrderController';
 
@@ -23,15 +27,22 @@ route.post('/add_product', addProductController);
 
 route.post('/add_category', addCategoryController);
 
+route.get('/edit_product', getEditProductController);
+
+route.get('/edit_category', getEditCategoryController);
+
+route.post('/edit_product', postEditProductController);
+
+route.post('/edit_category', postEditCategoryController);
+
 // eshop customer routes
 
 route.get('/get_items', getItemsController);
+
 route.get('/get_categories', getCategoriesController);
 
 route.get('/item/:id', getOneItemController);
 
 route.post('/order', createOrderController);
-
-
 
 export default route;
