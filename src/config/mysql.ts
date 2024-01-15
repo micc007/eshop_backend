@@ -38,7 +38,7 @@ async function modifyQuery(query: string, props?: any): Promise<ResultSetHeader>
 // query functions for specific endpoints
 
 const getItems = () => {
-    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM products p, categories c WHERE c.category_id = p.category_id";
+    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category_id, c.category FROM products p, categories c WHERE c.category_id = p.category_id";
     return selectQuery(query);
 }
 

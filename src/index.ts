@@ -1,5 +1,5 @@
 import express, { Express, Request, Response} from "express";
-// import cors from "cors";
+import cors from "cors";
 import routes from './routes';
 
 import dotenv from 'dotenv';
@@ -7,6 +7,7 @@ dotenv.config();
 
 let app: Express = express();
 
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
