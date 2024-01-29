@@ -5,7 +5,7 @@ const getCategoriesController = (req: Request, res: Response, next: NextFunction
 
     getCategories()
         .then(items => {
-            console.log(items);
+            console.log("get categories");
             res.status(200).send(items);
         })
         .catch(err => {

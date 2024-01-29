@@ -5,7 +5,7 @@ const getItemsController = (req: Request, res: Response, next: NextFunction) => 
 
     getItems()
         .then(items => {
-            console.log(items);
+            console.log("get items");
             res.status(200).send(items);
         })
         .catch(err => {

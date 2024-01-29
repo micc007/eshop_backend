@@ -11,7 +11,7 @@ const createOrderController = async (req: Request, res: Response, next: NextFunc
     
     const b = req.body;
     const paymentId = nanoid();
-    let orderItemsArray: orderItemType[] = req.body.items;
+    let orderItemsArray: orderItemType[] = b.items;
     let itemIdArray: string[] = orderItemsArray.map(a => a.product_id); // select product IDs for fetch function
 
     const itemData: any[] = await getItemPrices(itemIdArray); // fetch prices of cart items from database
@@ -27,17 +27,18 @@ const createOrderController = async (req: Request, res: Response, next: NextFunc
         else availabilityMap.set(itemData[i].product_id, true);
     }
 
-    
     if(isInStock(availabilityMap)){
+
+        const orderId: string = nanoid();
         // if all items are available in desired quantity, create order
         const orderData: orderType = {
-            order_id: nanoid(),
-            cust_reg: req.body.cust_reg,
-            reg_cust_id: req.body.reg_cust_id, // change when user registration is implemented
-            non_reg_cust: JSON.stringify(req.body.non_reg_cust), // change when user registration is implemented
+            order_id: orderId,
+            cust_reg: b.cust_reg,
+            reg_cust_id: b.reg_cust_id, // change when user registration is implemented
+            non_reg_cust: JSON.stringify(b.non_reg_cust), // change when user registration is implemented
             items: JSON.stringify({"items":orderItemsArray}),
             status: "created",
-            delivery: req.body.delivery,
+            delivery: b.delivery,
             timestamp: new Date(),
             payment_id: paymentId
         }
@@ -53,7 +54,7 @@ const createOrderController = async (req: Request, res: Response, next: NextFunc
         const paymentData: paymentType = {
             payment_id: paymentId,
             value: fullPrice,
-            method: req.body.payment_method,
+            method: b.payment_method,
             status: false,
         }
         
@@ -66,15 +67,15 @@ const createOrderController = async (req: Request, res: Response, next: NextFunc
         }
         catch {
             console.log("500 - server failure");
-            res.status(500).json({"message":"server failure"});
+            res.status(500).send("server failure");
         }
         
-        res.status(200).json({"message":"success"});
+        res.status(200).send(`Order ID ${orderId} created`);
     }
     else {
         // if any item is not available in desired quantity, just return message and hash map
-        res.status(200).json({
-            "message":"some items are not available in desired quantity",
+        res.status(200).send({
+            "message":"Order not created - some items are not available in desired quantity",
             availabilityMap
         })
     }
