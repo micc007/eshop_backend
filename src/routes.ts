@@ -9,6 +9,7 @@ import postEditProductController from './controllers/postEditProductController';
 import postEditCategoryController from './controllers/postEditCategoryController';
 import getOneItemController from './controllers/getOneItemController';
 import createOrderController from './controllers/createOrderController';
+import userLoginController from './controllers/userLoginController';
 
 const route = Router(); 
 
@@ -44,5 +45,7 @@ route.get('/get_categories', getCategoriesController);
 route.get('/item/:id', getOneItemController);
 
 route.post('/order', createOrderController);
+
+route.post('/user_login', userLoginController);
 
 export default route;

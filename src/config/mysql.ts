@@ -11,6 +11,7 @@ import { paymentType } from '../ts/types/paymentType';
 // import { itemDataType } from '../ts/types/itemDataType';
 import { editProductType } from '../ts/types/editProductType';
 import { editCategoryType } from '../ts/types/editCategoryType';
+import { regUserType } from '../ts/types/regUserType';
 
 
 const pool = mysql.createPool({
@@ -106,7 +107,17 @@ const getItemPrices = (props: string[]) => {
 }
 
 const updateStock = (props: [number, string]) => {
-    const query: string = "UPDATE products SET stock = ? WHERE product_id=?";
+    const query: string = "UPDATE products SET stock = ? WHERE product_id = ?";
+    return modifyQuery(query, props);
+}
+
+const findEmail = (props: string[]) => {
+    const query: string = "SELECT user_id, email FROM users WHERE email = ?";
+    return selectQuery(query, props);
+}
+
+const regUser = (props: regUserType) => {
+    const query: string = "INSERT INTO users (user_id, email, pass, act, act_ttl) VALUES (?,?,?,?,?)";
     return modifyQuery(query, props);
 }
 
@@ -122,5 +133,7 @@ export {
     createOrder,
     createPayment,
     getItemPrices,
-    updateStock
+    updateStock,
+    findEmail,
+    regUser
 };
