@@ -12,6 +12,7 @@ import { paymentType } from '../ts/types/paymentType';
 import { editProductType } from '../ts/types/editProductType';
 import { editCategoryType } from '../ts/types/editCategoryType';
 import { regUserType } from '../ts/types/regUserType';
+import { regUserDataType } from '../ts/types/regUserDataType';
 
 
 const pool = mysql.createPool({
@@ -121,6 +122,11 @@ const regUser = (props: regUserType) => {
     return modifyQuery(query, props);
 }
 
+const regUserData = (props: [regUserDataType, string]) => {
+    const query: string = "UPDATE users SET user_data=? WHERE user_id=?";
+    return modifyQuery(query, props)
+}
+
 export { 
     getItems,
     getCategories,
@@ -135,5 +141,6 @@ export {
     getItemPrices,
     updateStock,
     findEmail,
-    regUser
+    regUser,
+    regUserData
 };

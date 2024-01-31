@@ -10,6 +10,8 @@ import postEditCategoryController from './controllers/postEditCategoryController
 import getOneItemController from './controllers/getOneItemController';
 import createOrderController from './controllers/createOrderController';
 import userLoginController from './controllers/userLoginController';
+import userRegController from './controllers/userRegController';
+import userSetDataController from './controllers/userSetDataController';
 
 const route = Router(); 
 
@@ -47,5 +49,11 @@ route.get('/item/:id', getOneItemController);
 route.post('/order', createOrderController);
 
 route.post('/user_login', userLoginController);
+
+route.post('/user_reg', userRegController);
+
+// route.get('/activate',)
+
+route.post('/user/set_data', userSetDataController);
 
 export default route;
