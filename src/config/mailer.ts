@@ -40,18 +40,6 @@ const mail = async (data: emailDataType) => {
     if(result.accepted) return true;
     else return false;
 
-    // transporter.sendMail(mailOptions, (error, info) => {
-    //     if(error){
-    //         console.log(error);
-    //     }
-    //     else {
-    //         console.log("Message sent: %s", info.messageId);
-    //         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    //         result = true;
-    //     }
-    // });
-    
-    // return result;
 }
 
 export {
