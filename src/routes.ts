@@ -1,17 +1,17 @@
 import { Router, Request, Response, NextFunction } from 'express'
-import getItemsController from './controllers/getItemsController';
-import getCategoriesController from './controllers/getCategoriesController';
-import addProductController from './controllers/addProductController';
-import addCategoryController from './controllers/addCategoryController';
-import getEditProductController from './controllers/getEditProductController';
-import getEditCategoryController from './controllers/getEditCategoryController';
-import postEditProductController from './controllers/postEditProductController';
-import postEditCategoryController from './controllers/postEditCategoryController';
-import getOneItemController from './controllers/getOneItemController';
-import createOrderController from './controllers/createOrderController';
-import userLoginController from './controllers/userLoginController';
-import userRegController from './controllers/userRegController';
-import userSetDataController from './controllers/userSetDataController';
+import getItemsController from './controllers/product/getItemsController';
+import getCategoriesController from './controllers/category/getCategoriesController';
+import addProductController from './controllers/product/addProductController';
+import addCategoryController from './controllers/category/addCategoryController';
+import getEditProductController from './controllers/product/getEditProductController';
+import getEditCategoryController from './controllers/category/getEditCategoryController';
+import postEditProductController from './controllers/product/postEditProductController';
+import postEditCategoryController from './controllers/category/postEditCategoryController';
+import getOneItemController from './controllers/product/getOneItemController';
+import createOrderController from './controllers/order/createOrderController';
+import userLoginController from './controllers/user/userLoginController';
+import userRegController from './controllers/user/userRegController';
+import userSetDataController from './controllers/user/userSetDataController';
 
 const route = Router(); 
 

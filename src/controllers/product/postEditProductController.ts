@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { editProduct } from '../config/mysql'
-import { editProductType } from "../ts/types/editProductType";
+import { editProduct } from '../../config/mysql'
+import { editProductType } from "../../ts/types/product/editProductType";
 
 const postEditProductController = (req: Request, res: Response, next: NextFunction) => {
     

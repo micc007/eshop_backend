@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { regUserData } from '../config/mysql';
-import { regUserDataType } from "../ts/types/regUserDataType";
+import { regUserData } from '../../config/mysql';
+import { regUserDataType } from "../../ts/types/user/regUserDataType";
 
 const userSetDataController = (req: Request, res: Response, next: NextFunction) => {
 

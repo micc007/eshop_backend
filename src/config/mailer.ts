@@ -1,5 +1,5 @@
 import { Transporter } from "nodemailer";
-import { emailDataType } from "../ts/types/emailDataType";
+import { emailDataType } from "../ts/types/email/emailDataType";
 const nodemailer = require('nodemailer');
 
 let transporter: Transporter = nodemailer.createTransport({

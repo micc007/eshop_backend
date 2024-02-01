@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { addCategory } from '../config/mysql';
-import { addCategoryType } from "../ts/types/addCategoryType";
+import { addCategory } from '../../config/mysql';
+import { addCategoryType } from "../../ts/types/category/addCategoryType";
 
 import { nanoid } from 'nanoid'
 

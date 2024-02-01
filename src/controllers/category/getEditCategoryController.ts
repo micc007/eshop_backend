@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from "express";
+import { getOneCategory } from "../../config/mysql";
 
-import { getOneItem } from "../config/mysql";
+const getEditCategoryController = (req: Request, res: Response, next: NextFunction) => {
 
-const getEditProductController = (req: Request, res: Response, next: NextFunction) => {
+    const idArray: string[] = [req.body.category_id];
 
-    const idArray: string[] = [req.body.product_id];
-
-    getOneItem(idArray)
+    getOneCategory(idArray)
         .then(item => {
             console.log(item);
             res.status(200).send(item);
@@ -18,4 +17,4 @@ const getEditProductController = (req: Request, res: Response, next: NextFunctio
 
 }
 
-export default getEditProductController;
+export default getEditCategoryController;

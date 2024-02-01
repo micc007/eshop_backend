@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { editCategory } from "../config/mysql";
-import { editCategoryType } from "../ts/types/editCategoryType";
+import { editCategory } from "../../config/mysql";
+import { editCategoryType } from "../../ts/types/category/editCategoryType";
 
 const postEditCategoryController = (req: Request, res: Response, next: NextFunction) => {
     

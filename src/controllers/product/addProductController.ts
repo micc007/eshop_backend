@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { addProduct } from '../config/mysql';
-import { addProductType } from "../ts/types/addProductType";
+import { addProduct } from '../../config/mysql';
+import { addProductType } from "../../ts/types/product/addProductType";
 
 import { nanoid } from 'nanoid'
 

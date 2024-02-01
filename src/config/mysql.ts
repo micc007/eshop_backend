@@ -3,16 +3,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // TYPES
-import { addProductType } from '../ts/types/addProductType';
-import { addCategoryType } from '../ts/types/addCategoryType';
-import { orderType } from '../ts/types/orderType';
-import { paymentType } from '../ts/types/paymentType';
+import { addProductType } from '../ts/types/product/addProductType';
+import { addCategoryType } from '../ts/types/category/addCategoryType';
+import { orderType } from '../ts/types/order/orderType';
+import { paymentType } from '../ts/types/order/paymentType';
 // import { orderItemType } from '../ts/types/orderItemType';
 // import { itemDataType } from '../ts/types/itemDataType';
-import { editProductType } from '../ts/types/editProductType';
-import { editCategoryType } from '../ts/types/editCategoryType';
-import { regUserType } from '../ts/types/regUserType';
-import { regUserDataType } from '../ts/types/regUserDataType';
+import { editProductType } from '../ts/types/product/editProductType';
+import { editCategoryType } from '../ts/types/category/editCategoryType';
+import { regUserType } from '../ts/types/user/regUserType';
+import { regUserDataType } from '../ts/types/user/regUserDataType';
 
 
 const pool = mysql.createPool({

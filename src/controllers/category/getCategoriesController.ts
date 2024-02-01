@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { getItems } from '../config/mysql';
+import { getCategories } from '../../config/mysql';
 
-const getItemsController = (req: Request, res: Response, next: NextFunction) => {
+const getCategoriesController = (req: Request, res: Response, next: NextFunction) => {
 
-    getItems()
+    getCategories()
         .then(items => {
-            console.log("get items");
+            console.log("get categories");
             res.status(200).send(items);
         })
         .catch(err => {
@@ -15,4 +15,4 @@ const getItemsController = (req: Request, res: Response, next: NextFunction) => 
         
 }
 
-export default getItemsController;
+export default getCategoriesController;

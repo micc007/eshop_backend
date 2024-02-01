@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { createOrder, createPayment, getItemPrices, updateStock } from '../config/mysql';
-import { orderType } from "../ts/types/orderType";
-import { orderItemType } from "../ts/types/orderItemType";
-import { paymentType } from "../ts/types/paymentType";
-import { itemDataType } from "../ts/types/itemDataType";
+import { createOrder, createPayment, getItemPrices, updateStock } from '../../config/mysql';
+import { orderType } from "../../ts/types/order/orderType";
+import { orderItemType } from "../../ts/types/order/orderItemType";
+import { paymentType } from "../../ts/types/order/paymentType";
+import { itemDataType } from "../../ts/types/product/itemDataType";
 
 import { nanoid } from 'nanoid'
 
