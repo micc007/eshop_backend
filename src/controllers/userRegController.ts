@@ -3,52 +3,69 @@ import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
 import { randomUUID } from "crypto";
 import { findEmail, regUser } from '../config/mysql';
+import { mail } from "../config/mailer";
 import { regUserType } from "../ts/types/regUserType";
+import { emailDataType } from "../ts/types/emailDataType";
 
-const userRegController = (req: Request, res: Response, next: NextFunction) => {
+const userRegController = async (req: Request, res: Response, next: NextFunction) => {
     
     const b = req.body;
 
-    if(b.email !== undefined && b.pass !== undefined && b.pass2 !== undefined) {
-        findEmail([b.email])
-            .then(async (user) => {
-                if(user.length > 0) return res.status(200).send("User email is already registered, pick a different one");
-                if(b.pass !== b.pass2) return res.status(200).send("Passwords are not identical");
+    const emailData: emailDataType = {
+        destination: b.email,
+        subject: "hahaha skušam",
+        html: `
+            <h1>Micc0's eshop POKUS</h1>
+            <br>
+            <p>co skušaš jak skušaš? ja mám jednání</p>
+        `
+    };
 
-                const hashPass: string = await bcrypt.hash(b.pass, 10);
-                const actLink: string = randomUUID();
-                const expiresAt: number = 1000 * 60 * 60 * 24;
+    const hahaha: boolean = await mail(emailData);
 
-                const regUserData: regUserType = {
-                    user_id: nanoid(),
-                    email: b.email,
-                    pass: hashPass,
-                    act: actLink,
-                    act_ttl: new Date(Date.now() + expiresAt).toISOString().slice(0, 19).replace('T', ' ')
-                }
+    if(hahaha) res.status(200).send("ok");
+    else res.status(200).send("chujovo");
 
-                regUser(regUserData)
-                    .then(() => {
+    // if(b.email !== undefined && b.pass !== undefined && b.pass2 !== undefined) {
+    //     findEmail([b.email])
+    //         .then(async (user) => {
+    //             if(user.length > 0) return res.status(200).send("User email is already registered, pick a different one");
+    //             if(b.pass !== b.pass2) return res.status(200).send("Passwords are not identical");
 
-                        // send email with activation link here
-                        // process.env.FRONTEND_SHOP_URL
+    //             const hashPass: string = await bcrypt.hash(b.pass, 10);
+    //             const actLink: string = randomUUID();
+    //             const expiresAt: number = 1000 * 60 * 60 * 24;
 
-                        return res.status(200).send("Account created! We sent you an activation email, click the included link to activate your account");
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        return res.status(500).send("Error");
-                    });
-            })
-            .catch(err => {
-                console.log(err);
-                return res.status(500).send("Error");
-            });
+    //             const regUserData: regUserType = {
+    //                 user_id: nanoid(),
+    //                 email: b.email,
+    //                 pass: hashPass,
+    //                 act: actLink,
+    //                 act_ttl: new Date(Date.now() + expiresAt).toISOString().slice(0, 19).replace('T', ' ')
+    //             }
 
-    }
-    else {
-        return res.status(400).send("400 - User data missing");
-    }
+    //             regUser(regUserData)
+    //                 .then(() => {
+
+    //                     // send email with activation link here
+    //                     // process.env.FRONTEND_SHOP_URL
+
+    //                     return res.status(200).send("Account created! We sent you an activation email, click the included link to activate your account");
+    //                 })
+    //                 .catch(err => {
+    //                     console.log(err);
+    //                     return res.status(500).send("Error");
+    //                 });
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //             return res.status(500).send("Error");
+    //         });
+
+    // }
+    // else {
+    //     return res.status(400).send("400 - User data missing");
+    // }
         
 }
 

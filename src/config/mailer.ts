@@ -1,8 +1,6 @@
 import { Transporter } from "nodemailer";
 import { emailDataType } from "../ts/types/emailDataType";
-
 const nodemailer = require('nodemailer');
-require('dotenv').config();
 
 let transporter: Transporter = nodemailer.createTransport({
     host: process.env.EMAIL_SERVER,
@@ -19,10 +17,10 @@ let transporter: Transporter = nodemailer.createTransport({
     }*/
 });
 
-const sendConfirmationMail = (data: emailDataType) => {
+const mail = async (data: emailDataType) => {
 
     let mailOptions = {
-        from: '"2048 Clone " <' + process.env.EMAIL_ADDRESS + '>', // sender address
+        from: `"Micc0's ESHOP <${process.env.EMAIL_ADDRESS}>`, // sender address
         to: data.destination, // list of receivers
         subject: data.subject, // Subject line
         html: data.html, // html body
@@ -34,16 +32,29 @@ const sendConfirmationMail = (data: emailDataType) => {
         }]*/
     }
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if(error){
-            return console.log(error);
-        }
-        console.log("Message sent: %s", info.messageId);
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    });
+    const result = await transporter.sendMail(mailOptions)
+    .catch((err) => {
+        console.log(err)
+        return false;
+    })
+    if(result.accepted) return true;
+    else return false;
 
+    // transporter.sendMail(mailOptions, (error, info) => {
+    //     if(error){
+    //         console.log(error);
+    //     }
+    //     else {
+    //         console.log("Message sent: %s", info.messageId);
+    //         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    //         result = true;
+    //     }
+    // });
+    
+    // return result;
 }
-module.exports = {
+
+export {
     transporter,
-    sendConfirmationMail
+    mail
 }
