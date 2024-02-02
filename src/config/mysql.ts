@@ -13,6 +13,7 @@ import { editProductType } from '../ts/types/product/editProductType';
 import { editCategoryType } from '../ts/types/category/editCategoryType';
 import { regUserType } from '../ts/types/user/regUserType';
 import { regUserDataType } from '../ts/types/user/regUserDataType';
+import { actTokenType } from '../ts/types/user/actTokenType';
 
 
 const pool = mysql.createPool({
@@ -118,18 +119,23 @@ const findEmail = (props: string[]) => {
 }
 
 const regUser = (props: regUserType) => {
-    const query: string = "INSERT INTO users (user_id, email, pass, act, act_ttl) VALUES (?,?,?,?,?)";
+    const query: string = "INSERT INTO users (user_id, email, pass, act, act_link, act_ttl) VALUES (?,?,?,?,?,?)";
     return modifyQuery(query, props);
 }
 
 const regUserData = (props: [regUserDataType, string]) => {
     const query: string = "UPDATE users SET user_data=? WHERE user_id=?";
-    return modifyQuery(query, props)
+    return modifyQuery(query, props);
 }
 
-const findActToken = (props: [string]) => {
-    const query: string = "SELECT user_id, act, act_ttl FROM users WHERE act = ?";
+const findActToken = (props: string[]) => {
+    const query: string = "SELECT user_id, act, act_link, act_ttl FROM users WHERE act_link = ?";
     return selectQuery(query, props);
+}
+
+const activateAccount = (props: string[]) => {
+    const query: string = "UPDATE users SET act=true, act_link=null, act_ttl=null WHERE user_id=?";
+    return modifyQuery(query, props);
 }
 
 export { 
@@ -148,5 +154,6 @@ export {
     findEmail,
     regUser,
     regUserData,
-    findActToken
+    findActToken,
+    activateAccount
 }
