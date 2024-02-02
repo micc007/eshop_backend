@@ -127,6 +127,11 @@ const regUserData = (props: [regUserDataType, string]) => {
     return modifyQuery(query, props)
 }
 
+const findActToken = (props: [string]) => {
+    const query: string = "SELECT user_id, act, act_ttl FROM users WHERE act = ?";
+    return selectQuery(query, props);
+}
+
 export { 
     getItems,
     getCategories,
@@ -142,5 +147,6 @@ export {
     updateStock,
     findEmail,
     regUser,
-    regUserData
-};
+    regUserData,
+    findActToken
+}

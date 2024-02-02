@@ -12,6 +12,7 @@ import createOrderController from './controllers/order/createOrderController';
 import userLoginController from './controllers/user/userLoginController';
 import userRegController from './controllers/user/userRegController';
 import userSetDataController from './controllers/user/userSetDataController';
+import userActivationController from './controllers/user/userActivationController';
 
 const route = Router(); 
 
@@ -52,7 +53,7 @@ route.post('/user_login', userLoginController);
 
 route.post('/user_reg', userRegController);
 
-// route.get('/activate',)
+route.get('/activate/:token', userActivationController);
 
 route.post('/user/set_data', userSetDataController);
 
