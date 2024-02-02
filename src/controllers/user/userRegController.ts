@@ -28,7 +28,8 @@ const userRegController = async (req: Request, res: Response, next: NextFunction
                     user_id: nanoid(),
                     email: b.email,
                     pass: hashPass,
-                    act: actLink,
+                    act: false,
+                    act_link: actLink,
                     act_ttl: new Date(Date.now() + expiresAt).toISOString().slice(0, 19).replace('T', ' ')
                 }
 
