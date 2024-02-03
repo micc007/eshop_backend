@@ -14,6 +14,7 @@ import { editCategoryType } from '../ts/types/category/editCategoryType';
 import { regUserType } from '../ts/types/user/regUserType';
 import { regUserDataType } from '../ts/types/user/regUserDataType';
 import { actTokenType } from '../ts/types/user/actTokenType';
+import { passRecoveryType } from '../ts/types/user/passRecoveryType';
 
 
 const pool = mysql.createPool({
@@ -138,6 +139,11 @@ const activateAccount = (props: string[]) => {
     return modifyQuery(query, props);
 }
 
+const passRecovery = (props: passRecoveryType) => {
+    const query: string = "UPDATE users SET pass_rst=?, pass_rst_ttl=? WHERE user_id=?";
+    return modifyQuery(query, props);
+}
+
 export { 
     getItems,
     getCategories,
@@ -155,5 +161,6 @@ export {
     regUser,
     regUserData,
     findActToken,
-    activateAccount
+    activateAccount,
+    passRecovery
 }
