@@ -22,7 +22,7 @@ const userRegController = async (req: Request, res: Response, next: NextFunction
 
                 const hashPass: string = await bcrypt.hash(b.pass, 10);
                 const actLink: string = randomUUID();
-                const expiresAt: number = 1000 * 60 * 60 * 24;
+                const expiresAfter: number = 1000 * 60 * 60 * 24;
 
                 const regUserData: regUserType = {
                     user_id: nanoid(),
@@ -30,7 +30,7 @@ const userRegController = async (req: Request, res: Response, next: NextFunction
                     pass: hashPass,
                     act: false,
                     act_link: actLink,
-                    act_ttl: new Date(Date.now() + expiresAt).toISOString().slice(0, 19).replace('T', ' ')
+                    act_ttl: new Date(Date.now() + expiresAfter).toISOString().slice(0, 19).replace('T', ' ')
                 }
 
                 regUser(regUserData)
