@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express'
+import { Router, Request, Response, NextFunction } from 'express';
 import getItemsController from './controllers/product/getItemsController';
 import getCategoriesController from './controllers/category/getCategoriesController';
 import addProductController from './controllers/product/addProductController';
@@ -13,6 +13,8 @@ import userLoginController from './controllers/user/userLoginController';
 import userRegController from './controllers/user/userRegController';
 import userSetDataController from './controllers/user/userSetDataController';
 import userActivationController from './controllers/user/userActivationController';
+import passRecoveryController from './controllers/user/passRecoveryController';
+import setPassController from './controllers/user/setPassController';
 
 const route = Router(); 
 
@@ -56,5 +58,9 @@ route.post('/user_reg', userRegController);
 route.get('/activate/:token', userActivationController);
 
 route.post('/user/set_data', userSetDataController);
+
+route.post('/pass_recovery', passRecoveryController);
+
+route.post('/set_pass', setPassController);
 
 export default route;
