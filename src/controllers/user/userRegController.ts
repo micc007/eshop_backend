@@ -52,7 +52,10 @@ const userRegController = async (req: Request, res: Response, next: NextFunction
                     
                         const result: boolean = await mail(emailData);
                     
-                        if(result) res.status(200).send("Account created! We sent you an activation email, click the included link to activate your account");
+                        if(result) {
+                            console.log("Account activation email sent");
+                            res.status(200).send("Account created! We sent you an activation email, click the included link to activate your account");
+                        }
                         else res.status(500).send("Error occured while sending email");
 
                     })
