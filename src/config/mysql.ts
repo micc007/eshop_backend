@@ -15,6 +15,7 @@ import { regUserType } from '../ts/types/user/regUserType';
 import { regUserDataType } from '../ts/types/user/regUserDataType';
 import { actTokenType } from '../ts/types/user/actTokenType';
 import { passRecoveryType } from '../ts/types/user/passRecoveryType';
+import { setPassType } from '../ts/types/user/setPassType';
 
 
 const pool = mysql.createPool({
@@ -63,12 +64,12 @@ const addCategory = (props: addCategoryType) => {
 }
 
 const getOneItem = (props: string[]) => {
-    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM products p, categories c WHERE p.product_id = ? AND c.category_id = p.category_id";
+    const query: string = "SELECT p.product_id, p.name, p.price, p.stock, p.specs, c.category FROM products p, categories c WHERE p.product_id=? AND c.category_id = p.category_id";
     return selectQuery(query, props);
 }
 
 const getOneCategory = (props: string[]) => {
-    const query: string = "SELECT category_id, category FROM categories WHERE category_id = ?";
+    const query: string = "SELECT category_id, category FROM categories WHERE category_id=?";
     return selectQuery(query, props);
 }
 
@@ -110,12 +111,12 @@ const getItemPrices = (props: string[]) => {
 }
 
 const updateStock = (props: [number, string]) => {
-    const query: string = "UPDATE products SET stock = ? WHERE product_id = ?";
+    const query: string = "UPDATE products SET stock=? WHERE product_id=?";
     return modifyQuery(query, props);
 }
 
 const findEmail = (props: string[]) => {
-    const query: string = "SELECT user_id, email FROM users WHERE email = ?";
+    const query: string = "SELECT user_id, email FROM users WHERE email=?";
     return selectQuery(query, props);
 }
 
@@ -130,7 +131,7 @@ const regUserData = (props: [regUserDataType, string]) => {
 }
 
 const findActToken = (props: string[]) => {
-    const query: string = "SELECT user_id, act, act_link, act_ttl FROM users WHERE act_link = ?";
+    const query: string = "SELECT user_id, act, act_link, act_ttl FROM users WHERE act_link=?";
     return selectQuery(query, props);
 }
 
@@ -141,6 +142,16 @@ const activateAccount = (props: string[]) => {
 
 const passRecovery = (props: passRecoveryType) => {
     const query: string = "UPDATE users SET pass_rst=?, pass_rst_ttl=? WHERE user_id=?";
+    return modifyQuery(query, props);
+}
+
+const findPassToken = (props: string[]) => {
+    const query: string = "SELECT user_id, pass, pass_rst, pass_rst_ttl FROM users WHERE pass_rst=?";
+    return selectQuery(query, props);
+}
+
+const setPass = (props: setPassType) => {
+    const query: string = "UPDATE users SET pass=?, pass_rst=null, pass_rst_ttl=null WHERE user_id=?";
     return modifyQuery(query, props);
 }
 
@@ -162,5 +173,7 @@ export {
     regUserData,
     findActToken,
     activateAccount,
-    passRecovery
+    passRecovery,
+    findPassToken,
+    setPass
 }

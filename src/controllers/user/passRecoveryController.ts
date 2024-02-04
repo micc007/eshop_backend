@@ -10,7 +10,7 @@ import { passRecoveryType } from "../../ts/types/user/passRecoveryType";
 import dotenv from 'dotenv';
 dotenv.config();
 
-const passRecoveryController = async (req: Request, res: Response, next: NextFunction) => {
+const passRecoveryController = (req: Request, res: Response, next: NextFunction) => {
     
     if(!req.body.email) return res.status(400).send("Email not provided");
     

@@ -61,6 +61,6 @@ route.post('/user/set_data', userSetDataController);
 
 route.post('/pass_recovery', passRecoveryController);
 
-route.post('/set_pass', setPassController);
+route.post('/set_pass/:token', setPassController);
 
 export default route;
