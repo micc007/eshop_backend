@@ -15,22 +15,28 @@ const userActivationController = async (req: Request, res: Response, next: NextF
 
     findActToken(token)
         .then((data) => {
-            if(data.length === 0) return res.status(400).send("Activation link has expired, please register again");
+            if(data.length === 0) return res.status(400).send("Platnosť odkazu na aktiváciu účtu vypršala");
             const result: actTokenType[] = data as actTokenType[];
-            const userId: string[] = [result[0].user_id];
-            activateAccount(userId)
-                .then(() => {
-                    console.log(`User account activated -> ${result[0].user_id}`)
-                    return res.status(200).send("User account activated!");
-                })
-                .catch(err => {
-                    console.log(err);
-                    return res.status(500).send("Error - account activation");
-                })
+
+            const ttl: number = new Date(result[0].act_ttl).getTime();
+            if(ttl > Date.now()) {
+                const userId: string[] = [result[0].user_id];
+                activateAccount(userId)
+                    .then(() => {
+                        console.log(`User account activated -> ${result[0].user_id}`)
+                        return res.status(200).send("Používateľský účet aktivovaný");
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        return res.status(500).send("Error");
+                    })
+            }
+            else return res.status(200).send("Platnosť odkazu vypršala, zaregistrujte sa znova");
+
         })
         .catch(err => {
             console.log(err);
-            return res.status(500).send("Error - provided token not found");
+            return res.status(500).send("Error");
         });
     
 }
