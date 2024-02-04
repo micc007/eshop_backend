@@ -7,9 +7,11 @@ dotenv.config();
 
 const userActivationController = async (req: Request, res: Response, next: NextFunction) => {
     
-    if(!req.params.token) return res.status(400).send("Token neni");
+    if(!req.params.token) return res.status(400).send("Token not provided");
     
     const token: string[] = [req.params.token]
+
+    // NEED TO ADD TTL CHECK
 
     findActToken(token)
         .then((data) => {
@@ -18,6 +20,7 @@ const userActivationController = async (req: Request, res: Response, next: NextF
             const userId: string[] = [result[0].user_id];
             activateAccount(userId)
                 .then(() => {
+                    console.log(`User account activated -> ${result[0].user_id}`)
                     return res.status(200).send("User account activated!");
                 })
                 .catch(err => {
