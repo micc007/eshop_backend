@@ -36,7 +36,7 @@ const userRegController = async (req: Request, res: Response, next: NextFunction
                 regUser(regUserData)
                     .then(async () => {
 
-                        const link: string = `${process.env.FRONTEND_SHOP_URL}${actLink}`;
+                        const link: string = `${process.env.FRONTEND_SHOP_URL}activate/${actLink}`;
 
                         const emailData: emailDataType = {
                             destination: b.email,
@@ -45,8 +45,7 @@ const userRegController = async (req: Request, res: Response, next: NextFunction
                                 <h1>Micc0's eshop</h1>
                                 <h1>Aktivácia účtu</h2>
                                 <br>
-                                <p>Pre aktiváciu Vášho účtu kliknite na tento link</p>
-                                <a href=${link}>${link}</a>
+                                <p>Pre aktiváciu Vášho účtu kliknite na tento link - ${link}</p>
                             `
                         };
                     
