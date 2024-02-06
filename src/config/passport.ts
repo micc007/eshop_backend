@@ -21,46 +21,24 @@ dotenv.config();
 // Local strategy
 
 passport.use(new passportLocal.Strategy({ usernameField: 'email', passwordField: 'password' }, (email: string, password: string, done) => {
-
     findUser([email])
-    .then(async (data) => {
-        if(data.length === 0) return done(null, false, {message: "Používateľ neexistuje"});
-        const user: findUserType[] = data as findUserType[];
+        .then(async (data) => {
+            if(data.length === 0) return done(null, false, {message: "Používateľ neexistuje"});
+            const user: findUserType[] = data as findUserType[];
 
-        if(user[0].act !== true) return done(null, false, {message: "Aktivujte svoj účet kliknutím na link vo vašej emailovej schránke"});
-        if(await bcrypt.compare(password, user[0].pass)){
-            return done(null, user[0]);
-        }
-        else {
-            return done(null, false, {message: "Nesprávne heslo"});
-        }
+            if(user[0].act !== true) return done(null, false, {message: "Aktivujte svoj účet kliknutím na link vo vašej emailovej schránke"});
+            if(await bcrypt.compare(password, user[0].pass)){
+                return done(null, user[0]);
+            }
+            else {
+                return done(null, false, {message: "Nesprávne heslo"});
+            }
 
-    })
-    .catch(err => {
-        console.log(err);
-        return done(err, false);
-    })
-        // User.findOne({email: email}).then(async (foundUser) => {
-        //     if(foundUser){
-        //         if(foundUser.google) return done(null, false, {message: "Account is already registered via Google, please press Sign in with Google"});
-        //         if(await bcrypt.compare(password, foundUser.pass)){
-        //             if(foundUser.activated === true){
-        //                 return done(null, foundUser);
-        //             }
-        //             return done(null, false, {message: "Please confirm your account in your email address"});
-        //         }
-        //         else {
-        //             return done(null, false, {message: "Incorrect password"});
-        //         }
-        //     }
-        //     else { // {message:"Invalid user"}
-        //         return done(null, false, {message:"Invalid user"});
-        //     }
-        // })
-        // .catch((err) => {
-        //     console.log(err);
-        // })
-
-        
+        })
+        .catch(err => {
+            console.log(err);
+            return done(err, false);
+        })
+    
     })
 )
