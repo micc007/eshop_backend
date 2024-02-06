@@ -36,6 +36,7 @@ const userRegController = async (req: Request, res: Response, next: NextFunction
                 regUser(regUserData)
                     .then(async () => {
 
+                        // change the link when frontend is implemented
                         const link: string = `${process.env.FRONTEND_SHOP_URL}activate/${actLink}`;
 
                         const emailData: emailDataType = {

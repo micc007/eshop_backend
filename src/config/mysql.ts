@@ -155,6 +155,11 @@ const setPass = (props: setPassType) => {
     return modifyQuery(query, props);
 }
 
+const findUser = (props: string[]) => {
+    const query: string = "SELECT user_id, email, act, pass, user_data FROM users WHERE email=?";
+    return selectQuery(query, props);
+}
+
 export { 
     getItems,
     getCategories,
@@ -175,5 +180,6 @@ export {
     activateAccount,
     passRecovery,
     findPassToken,
-    setPass
+    setPass,
+    findUser
 }
