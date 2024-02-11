@@ -10,11 +10,16 @@ import postEditCategoryController from './controllers/category/postEditCategoryC
 import getOneItemController from './controllers/product/getOneItemController';
 import createOrderController from './controllers/order/createOrderController';
 import userLoginController from './controllers/user/userLoginController';
+import userLogoutController from './controllers/user/userLogoutController';
 import userRegController from './controllers/user/userRegController';
 import userSetDataController from './controllers/user/userSetDataController';
 import userActivationController from './controllers/user/userActivationController';
 import passRecoveryController from './controllers/user/passRecoveryController';
 import setPassController from './controllers/user/setPassController';
+
+import passport from 'passport';
+import './config/passport';
+import { findUserType } from './ts/types/user/findUserType';
 
 const route = Router(); 
 
@@ -52,6 +57,8 @@ route.get('/item/:id', getOneItemController);
 route.post('/order', createOrderController);
 
 route.post('/user_login', userLoginController);
+
+route.post('/user_logout', userLogoutController);
 
 route.post('/user_reg', userRegController);
 

@@ -1,9 +1,7 @@
 import { regUserDataType } from "./regUserDataType"
 
-export type findUserType = {
+export type userResponseType = {
     user_id: string,
     email: string,
-    pass: string,
-    act: number,
     user_data?: regUserDataType | null,
 }

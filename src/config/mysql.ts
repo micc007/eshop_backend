@@ -160,7 +160,12 @@ const findUser = (props: string[]) => {
     return selectQuery(query, props);
 }
 
-export { 
+const findUserById = (props: string[]) => {
+    const query: string = "SELECT user_id, email, act, pass, user_data FROM users WHERE user_id=?";
+    return selectQuery(query, props);
+}
+
+export {
     getItems,
     getCategories,
     addProduct,
@@ -181,5 +186,6 @@ export {
     passRecovery,
     findPassToken,
     setPass,
-    findUser
+    findUser,
+    findUserById
 }
